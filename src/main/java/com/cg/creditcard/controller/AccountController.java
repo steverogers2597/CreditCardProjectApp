@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cg.creditcard.entity.Account;
-import com.cg.creditcard.model.AccountDTO;
+
 import com.cg.creditcard.service.IAccountService;
 import com.cg.creditcard.service.impl.AccountService;
 
 @RestController
-@RequestMapping("/account")
+@RequestMapping("/creditcardapp")
 public class AccountController {
 	
 	@Autowired
@@ -29,20 +29,20 @@ public class AccountController {
 	
 	@GetMapping("/getAllAccounts")
 	public ResponseEntity getAllAccounts(){
-		List<AccountDTO> accounts = accountService.getAllAccounts();
+		List<Account> accounts = accountService.getAllAccounts();
 		ResponseEntity response = new ResponseEntity(accounts,HttpStatus.OK);
 		return response;
 	}
 	
 	@GetMapping("/getAccountById/{id}")
 	public ResponseEntity getAccountById(@PathVariable("id")long id) {
-		AccountDTO account = accountService.getAccount(id);
+		Account account = accountService.getAccount(id);
 		return new ResponseEntity(account,HttpStatus.OK);
 	}
 	
 	@PostMapping("/addAccount")
-	public ResponseEntity addAccount(@RequestBody AccountDTO accountdto) {
-		accountService.addAccount(accountdto);
+	public ResponseEntity addAccount(@RequestBody Account account) {
+		accountService.addAccount(account);
 		return new ResponseEntity("Account added successfully!",HttpStatus.OK);
 	}
 	
@@ -53,8 +53,8 @@ public class AccountController {
 	}
 	
 	@PutMapping("/updateAccount/{id}")
-	public ResponseEntity updateAccount(@RequestBody @PathVariable("id")long id,AccountDTO accountdto) {
-		accountService.updateAccount(id, accountdto);
+	public ResponseEntity updateAccount(@RequestBody @PathVariable("id")long id,Account account) {
+		accountService.updateAccount(id, account);
 		return new ResponseEntity("Account updated successfully!",HttpStatus.OK);
 	}
 }

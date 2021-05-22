@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 
@@ -17,15 +19,19 @@ public class Transaction {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long tranId;
 	private String cardNumber;
-	private LocalDate tranDate;
+	private String tranDate;
 	private String status;
 	private double amount;
 	private String paymentMethod;
 	private String description;
 	
+	@ManyToOne
+	@JoinColumn(name="creditcard__id")
+	private CreditCard creditCard;
 	
-	public Transaction(long tranId, String cardNumber, LocalDate tranDate, String status, double amount,
-			String paymentMethod, String description) {
+	
+	public Transaction(long tranId, String cardNumber, String tranDate, String status, double amount,
+			String paymentMethod, String description,CreditCard creditCard) {
 		super();
 		this.tranId = tranId;
 		this.cardNumber = cardNumber;
@@ -34,6 +40,7 @@ public class Transaction {
 		this.amount = amount;
 		this.paymentMethod = paymentMethod;
 		this.description = description;
+		this.creditCard=creditCard;
 	}
 
 	public long getTranId() {
@@ -52,11 +59,11 @@ public class Transaction {
 		this.cardNumber = cardNumber;
 	}
 
-	public LocalDate getTranDate() {
+	public String getTranDate() {
 		return tranDate;
 	}
 
-	public void setTranDate(LocalDate tranDate) {
+	public void setTranDate(String tranDate) {
 		this.tranDate = tranDate;
 	}
 
@@ -91,12 +98,25 @@ public class Transaction {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	
+	public CreditCard getCreditCard() {
+		return creditCard;
+	}
+
+	public void setCreditCard(CreditCard creditCard) {
+		this.creditCard = creditCard;
+	}
+
+	public void setTranId(Long tranId) {
+		this.tranId = tranId;
+	}
 
 	@Override
 	public String toString() {
 		return "Transaction [tranId=" + tranId + ", cardNumber=" + cardNumber + ", tranDate=" + tranDate + ", status="
 				+ status + ", amount=" + amount + ", paymentMethod=" + paymentMethod + ", description=" + description
-				+ "]";
+				+ ", creditCard=" + creditCard + "]";
 	}
 
 	public Transaction() {

@@ -6,36 +6,34 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import com.cg.creditcard.entity.Customer;
-import com.cg.creditcard.model.CustomerDTO;
+
 import com.cg.creditcard.repository.CustomerRepository;
 import com.cg.creditcard.service.ICustomerService;
-import com.cg.creditcard.utils.CustomerUtils;
+
 
 @Service
 public class CustomerService implements ICustomerService{
 	@Autowired
 	private CustomerRepository customerRepository;
 	
-	public List<CustomerDTO> getAllCustomers(){
+	public List<Customer> getAllCustomers(){
 		List<Customer> cList= customerRepository.findAll();
-		List<CustomerDTO> dtoList = CustomerUtils.convertToCustomerDtoList(cList);
-		return dtoList;
+		return cList;
 	}
 	
-	public CustomerDTO getCustomer(String custId) {
-		CustomerDTO customerDto =new CustomerDTO();
+	public Customer getCustomer(String custId) {
 		Optional<Customer> optional = customerRepository.findById(custId);
-		if(optional.isPresent()) {
-			Customer customer=optional.get();
-			customerDto= CustomerUtils.convertToCustomerDto(customer);
+		if(!optional.isPresent()) {
+			return null;
 		}
-		return customerDto;
+		return optional.get();
 	}
 	
-	public void addCustomer(CustomerDTO customerdto) {
+	public Customer addCustomer(Customer customer) {
 		
-		customerRepository.saveAndFlush(CustomerUtils.convertToCustomer(customerdto));
+		return customerRepository.saveAndFlush(customer);
 		
 	}
 	
@@ -45,13 +43,14 @@ public class CustomerService implements ICustomerService{
 		
 	}
 	
-	public void updateCustomer(String custId,CustomerDTO customerdto) {
+	public Customer updateCustomer(String custId,Customer customer) {
 		Optional<Customer> optional = customerRepository.findById(custId);
-		if(optional.isPresent()) {
-			Customer customer=optional.get();
-			customerRepository.save(CustomerUtils.convertToCustomer(customerdto));
+		if(!optional.isPresent()) {
 			
+			return null;
 		}
+		customer=optional.get();
+		return customerRepository.save(customer);
 		
 	}
 	

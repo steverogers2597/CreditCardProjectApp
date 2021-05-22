@@ -13,8 +13,10 @@ import javax.persistence.Table;
 public class Address {
 	
 	
-	private Integer id;
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer addressId;
 	private String doorNo;
 	private String street;
 	private String area;
@@ -22,9 +24,7 @@ public class Address {
 	private String state;
 	private int pincode;
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer addressId;
+	
 	
 	public Address() {
 		super();

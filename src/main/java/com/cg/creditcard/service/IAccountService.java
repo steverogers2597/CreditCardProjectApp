@@ -3,13 +3,13 @@ package com.cg.creditcard.service;
 import java.util.List;
 
 import com.cg.creditcard.entity.Account;
-import com.cg.creditcard.model.AccountDTO;
+
 
 public interface IAccountService {
-	void addAccount(AccountDTO accountdto);
+	Account addAccount(Account account);
 	void removeAccount(long id);
-	void updateAccount(long id,AccountDTO accountdto);
-	AccountDTO getAccount(long id);
-	List<AccountDTO> getAllAccounts();
+	Account updateAccount(long id,Account account);
+	Account getAccount(long id);
+	List<Account> getAllAccounts();
 
 }

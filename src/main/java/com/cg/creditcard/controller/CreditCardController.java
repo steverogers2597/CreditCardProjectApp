@@ -14,18 +14,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cg.creditcard.entity.CreditCard;
 
-import com.cg.creditcard.model.CreditCardDTO;
 import com.cg.creditcard.service.ICreditCardService;
 
 @RestController
-@RequestMapping("/creditcard")
+@RequestMapping("/creditcardapp")
 public class CreditCardController {
 	@Autowired
 	ICreditCardService creditCardService;
 	@PostMapping("/addCreditCard")
-	public ResponseEntity addCreditcard(@RequestBody CreditCardDTO credircarddto) {
-		creditCardService.addCreditCard(credircarddto);
+	public ResponseEntity addCreditcard(@RequestBody CreditCard creditcard) {
+		creditCardService.addCreditCard(creditcard);
 		return new ResponseEntity("Creditcard added successfully!",HttpStatus.OK);
 	}
 	@DeleteMapping("/removeCreditCard/{id}")
@@ -34,18 +34,18 @@ public class CreditCardController {
 		return new ResponseEntity("creditCard removed Successfully!",HttpStatus.OK);
 	}
 	@PutMapping("/updateCreditCard{id}")
-	public ResponseEntity updateCreditCard(@RequestBody @PathVariable("id")long id,CreditCardDTO credircarddto) {
-		creditCardService.updateCreditCard(id, credircarddto);
+	public ResponseEntity updateCreditCard(@RequestBody @PathVariable("id")long id,CreditCard creditcard) {
+		creditCardService.updateCreditCard(id, creditcard);
 		return new ResponseEntity("CreditCard updated successfully!",HttpStatus.OK);
 	}
 	@GetMapping("/getCreditCardById/{id}")
-	public ResponseEntity getAccountById(@PathVariable("id")long id) {
-		CreditCardDTO creditcard = creditCardService.getCreditCard(id);
+	public ResponseEntity getCreditCardById(@PathVariable("id")long id) {
+		CreditCard creditcard = creditCardService.getCreditCard(id);
 		return new ResponseEntity(creditcard,HttpStatus.OK);
 	}
 	@GetMapping("/getAllCreditCards")
 	public ResponseEntity getAllCreditCards(){
-		List<CreditCardDTO> creditcards = creditCardService.getAllCreditCards();
+		List<CreditCard> creditcards = creditCardService.getAllCreditCards();
 		ResponseEntity response = new ResponseEntity(creditcards,HttpStatus.OK);
 		return response;
 	}

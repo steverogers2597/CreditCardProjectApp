@@ -19,13 +19,13 @@ public class Statement {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long statementId;
 	private double dueAmount;
-	private LocalDate billingDate;
-	private LocalDate dueDate;
+	private String billingDate;
+	private String dueDate;
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="user_id")
 	private Customer customer;
 	
-	public Statement(long statementId, double dueAmount, LocalDate billingDate, LocalDate dueDate, Customer customer) {
+	public Statement(long statementId, double dueAmount, String billingDate, String dueDate, Customer customer) {
 		super();
 		this.statementId = statementId;
 		this.dueAmount = dueAmount;
@@ -50,19 +50,19 @@ public class Statement {
 		this.dueAmount = dueAmount;
 	}
 
-	public LocalDate getBillingDate() {
+	public String getBillingDate() {
 		return billingDate;
 	}
 
-	public void setBillingDate(LocalDate billingDate) {
+	public void setBillingDate(String billingDate) {
 		this.billingDate = billingDate;
 	}
 
-	public LocalDate getDueDate() {
+	public String getDueDate() {
 		return dueDate;
 	}
 
-	public void setDueDate(LocalDate dueDate) {
+	public void setDueDate(String dueDate) {
 		this.dueDate = dueDate;
 	}
 

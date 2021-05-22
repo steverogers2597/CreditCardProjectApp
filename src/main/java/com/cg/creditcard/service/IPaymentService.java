@@ -1,11 +1,9 @@
 package com.cg.creditcard.service;
 
 import com.cg.creditcard.entity.Payment;
-import com.cg.creditcard.model.PaymentDTO;
-
 public interface IPaymentService {
-	void addPayment(PaymentDTO paymentdto);
+	Payment addPayment(Payment payment);
 	void removePayment(long id);
-	void updatePayment(long id,PaymentDTO paymentdto);
-	PaymentDTO getPayment(long id);
+	Payment updatePayment(long id,Payment payment);
+	Payment getPayment(long id);
 }

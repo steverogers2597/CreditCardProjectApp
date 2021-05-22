@@ -5,11 +5,13 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.cg.creditcard.entity.CreditCard;
 import com.cg.creditcard.entity.Payment;
-import com.cg.creditcard.model.PaymentDTO;
+import com.cg.creditcard.repository.CreditCardRepository;
 import com.cg.creditcard.repository.PaymentRepository;
 import com.cg.creditcard.service.IPaymentService;
-import com.cg.creditcard.utils.PaymentUtils;
+
 
 @Service
 public class PaymentService implements IPaymentService{
@@ -17,19 +19,32 @@ public class PaymentService implements IPaymentService{
 	@Autowired
 	PaymentRepository paymentRepository;
 	
-	public PaymentDTO getPayment(long PaymentId) {
-		PaymentDTO paymentDTO =new PaymentDTO();
+	@Autowired
+	CreditCardRepository creditCardRepository;
+	
+	public Payment getPayment(long PaymentId) {
 		Optional<Payment> optional = paymentRepository.findById(PaymentId);
-		if(optional.isPresent()) {
-			Payment payment=optional.get();
-			paymentDTO= PaymentUtils.convertToPaymentDto(payment);
+		if(!optional.isPresent()) {
+			return null;
 		}
-		return paymentDTO;
+		return optional.get();
 	}
 	
-	public void addPayment(PaymentDTO paymentDTO) {
-		
-		paymentRepository.saveAndFlush(PaymentUtils.convertToPayment(paymentDTO));
+	public Payment addPayment(Payment payment) {
+		 CreditCard creditcard = creditCardRepository.findById(payment.getCreditCard().getId()).get();
+	        if (null == creditcard) {
+	        	creditcard = new CreditCard();
+	        }
+
+	        creditcard.setBankName(payment.getCreditCard().getBankName());
+	        creditcard.setCardType(payment.getCreditCard().getCardType());
+	        creditcard.setCardName(payment.getCreditCard().getCardName());
+	        creditcard.setCardNumber(payment.getCreditCard().getCardNumber());
+	        creditcard.setExpiryDate(payment.getCreditCard().getExpiryDate());
+	        creditcard.setCvv(payment.getCreditCard().getCvv());
+	        
+	        payment.setCreditCard(creditcard);
+	        return paymentRepository.save(payment);
 		
 	}
 	
@@ -38,14 +53,15 @@ public class PaymentService implements IPaymentService{
 		paymentRepository.deleteById(PaymentId);
 	}
 	
-	public void updatePayment(long PaymentId,PaymentDTO paymentDTO) {
+	public Payment updatePayment(long PaymentId,Payment payment) {
 		
 		Optional<Payment> optional = paymentRepository.findById(PaymentId);
-		if(optional.isPresent()) {
-			Payment payment=optional.get();
-			paymentRepository.save(PaymentUtils.convertToPayment(paymentDTO));
+		if(!optional.isPresent()) {
 			
+			return null;
 		}
+		payment=optional.get();
+		return paymentRepository.save(payment);
 	}
 
 	

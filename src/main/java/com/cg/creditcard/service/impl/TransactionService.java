@@ -6,14 +6,15 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cg.creditcard.entity.Customer;
+
+import com.cg.creditcard.entity.CreditCard;
+
 import com.cg.creditcard.entity.Transaction;
-import com.cg.creditcard.model.CustomerDTO;
-import com.cg.creditcard.model.TransactionDTO;
+
+import com.cg.creditcard.repository.CreditCardRepository;
 import com.cg.creditcard.repository.TransactionRepository;
 import com.cg.creditcard.service.ITransactionService;
-import com.cg.creditcard.utils.CustomerUtils;
-import com.cg.creditcard.utils.TransactionUtils;
+
 
 @Service
 public class TransactionService implements ITransactionService{
@@ -21,25 +22,41 @@ public class TransactionService implements ITransactionService{
 	@Autowired
 	private TransactionRepository transactionRepository;
 	
-	public List<TransactionDTO> getAllTransactions(){
-		List<Transaction> tList= transactionRepository.findAll();
-		List<TransactionDTO> dtoList = TransactionUtils.convertToTransactionDtoList(tList);
-		return dtoList;
-	}
+	@Autowired
+	private CreditCardRepository creditCardRepository;
 	
-	public TransactionDTO getTransactionDetails(long id) {
-		TransactionDTO transactionDto =new TransactionDTO();
-		Optional<Transaction> optional = transactionRepository.findById(id);
-		if(optional.isPresent()) {
-			Transaction transaction=optional.get();
-			transactionDto= TransactionUtils.convertToTransactionDto(transaction);
-		}
-		return transactionDto;
-	}
-	
-	public void addTransaction(TransactionDTO transactionDto) {
+	public List<Transaction> getAllTransactions(){
+		return transactionRepository.findAll();
 		
-		transactionRepository.saveAndFlush(TransactionUtils.convertToTransaction(transactionDto));
+	}
+	
+	public Transaction getTransactionDetails(long id) {
+		Optional<Transaction> optional = transactionRepository.findById(id);
+		if(!optional.isPresent()) {
+			return null;
+		}
+		return optional.get();
+	}
+	
+	public Transaction addTransaction(Transaction transaction) {
+		
+		
+        CreditCard creditcard = creditCardRepository.findById(transaction.getCreditCard().getId()).get();
+        if (null == creditcard) {
+        	creditcard = new CreditCard();
+        }
+
+        creditcard.setBankName(transaction.getCreditCard().getBankName());
+        creditcard.setCardType(transaction.getCreditCard().getCardType());
+        creditcard.setCardName(transaction.getCreditCard().getCardName());
+        creditcard.setCardNumber(transaction.getCreditCard().getCardNumber());
+        creditcard.setExpiryDate(transaction.getCreditCard().getExpiryDate());
+        creditcard.setCvv(transaction.getCreditCard().getCvv());
+        
+        transaction.setCreditCard(creditcard);
+        return transactionRepository.save(transaction);
+
+        
 		
 	}
 	
@@ -49,13 +66,14 @@ public class TransactionService implements ITransactionService{
 		
 	}
 	
-	public void updateTransaction(long id,TransactionDTO transactionDto) {
+	public Transaction updateTransaction(long id,Transaction transaction) {
 		Optional<Transaction> optional = transactionRepository.findById(id);
-		if(optional.isPresent()) {
-			Transaction transaction=optional.get();
-			transactionRepository.save(TransactionUtils.convertToTransaction(transactionDto));
+		if(!optional.isPresent()) {
 			
+			return null;
 		}
+		transaction=optional.get();
+		return transactionRepository.save(transaction);
 		
 	}
 }

@@ -20,7 +20,7 @@ public class Customer {
 	private String name;
 	private String email;
 	private String contactNo;
-	private  LocalDate dob;
+	private  String dob;
 	
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="address_id")
@@ -38,7 +38,7 @@ public class Customer {
 	@JoinColumn(name="creditcard_id")
 	private CreditCard creditcard;	
 	
-	public Customer(String userId, String name, String email, String contactNo, LocalDate dob, Address address,
+	public Customer(String userId, String name, String email, String contactNo, String dob, Address address,
 			Account account, Statement statement, CreditCard creditcard) {
 		super();
 		this.userId = userId;
@@ -82,10 +82,10 @@ public class Customer {
 	public void setContactNo(String contactNo) {
 		this.contactNo = contactNo;
 	}
-	public LocalDate getDob() {
+	public String getDob() {
 		return dob;
 	}
-	public void setDob(LocalDate dob) {
+	public void setDob(String dob) {
 		this.dob = dob;
 	}
 	public Address getAddress() {

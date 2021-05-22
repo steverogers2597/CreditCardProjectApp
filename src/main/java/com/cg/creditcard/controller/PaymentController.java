@@ -12,18 +12,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cg.creditcard.model.AccountDTO;
-import com.cg.creditcard.model.PaymentDTO;
+import com.cg.creditcard.entity.Payment;
 import com.cg.creditcard.service.IPaymentService;
 
 @RestController
-@RequestMapping("/payment")
+@RequestMapping("/creditcardapp")
 public class PaymentController {
 	@Autowired
 	IPaymentService paymentService;
 	@PostMapping("/addPayment")
-	public ResponseEntity addPayment(@RequestBody PaymentDTO paymentdto) {
-		paymentService.addPayment(paymentdto);
+	public ResponseEntity addPayment(@RequestBody Payment payment) {
+		paymentService.addPayment(payment);
 		return new ResponseEntity("Payment added successfully!",HttpStatus.OK);
 	}
 	@DeleteMapping("/removePayment/{id}")
@@ -32,13 +31,13 @@ public class PaymentController {
 		return new ResponseEntity("Payment removed Successfully!",HttpStatus.OK);
 	}
 	@PutMapping("/updatePayment/{id}")
-	public ResponseEntity updateAccount(@RequestBody @PathVariable("id")long id,PaymentDTO paymentdto) {
-		paymentService.updatePayment(id, paymentdto);
+	public ResponseEntity updatePayment(@RequestBody @PathVariable("id")long id,Payment payment) {
+		paymentService.updatePayment(id, payment);
 		return new ResponseEntity("Payment updated successfully!",HttpStatus.OK);
 	}
 	@GetMapping("/getPaymentById/{id}")
 	public ResponseEntity getPaymentById(@PathVariable("id")long id) {
-		 PaymentDTO payment = paymentService.getPayment(id);
+		Payment payment = paymentService.getPayment(id);
 		return new ResponseEntity(payment,HttpStatus.OK);
 	}
 	

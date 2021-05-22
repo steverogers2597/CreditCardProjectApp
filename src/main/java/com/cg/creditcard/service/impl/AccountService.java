@@ -7,51 +7,51 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cg.creditcard.entity.Account;
-import com.cg.creditcard.model.AccountDTO;
+
 import com.cg.creditcard.repository.AccountRepository;
 import com.cg.creditcard.service.IAccountService;
-import com.cg.creditcard.utils.AccountUtills;
+
 
 @Service
 public class AccountService implements IAccountService{
 	@Autowired
 	AccountRepository accountRepository;
 	
-	public List<AccountDTO> getAllAccounts(){
+	public List<Account> getAllAccounts(){
 		List<Account> accountList= accountRepository.findAll();
-		List<AccountDTO> accountDtoList = AccountUtills.convertToAccountDtoList(accountList);
-		return accountDtoList;
+		return accountList;
 	}
 	
-	public AccountDTO getAccount(long Id) {
-		AccountDTO accountDto =new AccountDTO();
-		Optional<Account> optional = accountRepository.findById(Id);
-		if(optional.isPresent()) {
-			Account account=optional.get();
-			accountDto= AccountUtills.convertToAccountDto(account);
+	public Account getAccount(long id) {
+		
+		Optional<Account> optional = accountRepository.findById(id);
+		if(!optional.isPresent()) {
+			return null;
 		}
-		return accountDto;
+		return optional.get();
 	}
 	
-	public void addAccount(AccountDTO accountDto) {
+	public Account addAccount(Account account) {
 		
-		accountRepository.saveAndFlush(AccountUtills.convertToAccount(accountDto));
+		return accountRepository.saveAndFlush(account);
 		
 	}
 	
-	public void removeAccount(long Id) {
+	public void removeAccount(long id) {
 		
-		accountRepository.deleteById(Id);
+		accountRepository.deleteById(id);
+		 
 	}
 	
-	public void updateAccount(long Id,AccountDTO accountDto) {
+	public Account updateAccount(long id,Account account) {
 		
-		Optional<Account> optional = accountRepository.findById(Id);
-		if(optional.isPresent()) {
-			Account account=optional.get();
-			accountRepository.save(AccountUtills.convertToAccount(accountDto));
+		Optional<Account> optional = accountRepository.findById(id);
+		if(!optional.isPresent()) {
 			
+			return null;
 		}
+		account=optional.get();
+		return accountRepository.save(account);
 	}
 
 }

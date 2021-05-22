@@ -16,14 +16,26 @@ public class Payment {
 	long paymentId;
 	String method;
 	double amountDue;
+	@ManyToOne
+	@JoinColumn(name="creditcard__id")
+	private CreditCard creditCard;
 	
 	
-	public Payment(long paymentId, String method, double amountDue) {
+	
+	public CreditCard getCreditCard() {
+		return creditCard;
+	}
+
+	public void setCreditCard(CreditCard creditCard) {
+		this.creditCard = creditCard;
+	}
+
+	public Payment(long paymentId, String method, double amountDue,CreditCard creditCard) {
 		super();
 		this.paymentId = paymentId;
 		this.method = method;
 		this.amountDue = amountDue;
-		
+		this.creditCard=creditCard;
 	}
 
 	public long getPaymentId() {

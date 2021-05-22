@@ -6,14 +6,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import com.cg.creditcard.entity.CreditCard;
-import com.cg.creditcard.entity.Customer;
-import com.cg.creditcard.model.CreditCardDTO;
-import com.cg.creditcard.model.CustomerDTO;
+
+
 import com.cg.creditcard.repository.CreditCardRepository;
 import com.cg.creditcard.service.ICreditCardService;
-import com.cg.creditcard.utils.CreditCardUtills;
-import com.cg.creditcard.utils.CustomerUtils;
 
 
 @Service
@@ -22,25 +20,22 @@ public class CreditCardService implements ICreditCardService{
 	@Autowired
 	CreditCardRepository creditCardRepository;
 	
-	public List<CreditCardDTO> getAllCreditCards(){
+	public List<CreditCard> getAllCreditCards(){
 		List<CreditCard> credList= creditCardRepository.findAll();
-		List<CreditCardDTO> credDtoList = CreditCardUtills.convertToCreditCardDtoList(credList);
-		return credDtoList;
+		return credList;
 	}
 	
-	public CreditCardDTO getCreditCard(long cardId) {
-		CreditCardDTO creditCardDto =new CreditCardDTO();
+	public CreditCard getCreditCard(long cardId) {
 		Optional<CreditCard> optional = creditCardRepository.findById(cardId);
-		if(optional.isPresent()) {
-			CreditCard creditCard=optional.get();
-			creditCardDto= CreditCardUtills.convertToCreditCardDto(creditCard);
+		if(!optional.isPresent()) {
+			return null;
 		}
-		return creditCardDto;
+		return optional.get();
 	}
 	
-	public void addCreditCard(CreditCardDTO creditCarddto) {
+	public CreditCard addCreditCard(CreditCard creditCard) {
 		
-		creditCardRepository.saveAndFlush(CreditCardUtills.convertToCreditCard(creditCarddto));
+		return creditCardRepository.saveAndFlush(creditCard);
 		
 	}
 	
@@ -49,13 +44,14 @@ public class CreditCardService implements ICreditCardService{
 		creditCardRepository.deleteById(cardId);
 	}
 	
-	public void updateCreditCard(long cardId,CreditCardDTO card) {
+	public CreditCard updateCreditCard(long cardId,CreditCard card) {
 		
 		Optional<CreditCard> optional = creditCardRepository.findById(cardId);
-		if(optional.isPresent()) {
-			CreditCard customer=optional.get();
-			creditCardRepository.save(CreditCardUtills.convertToCreditCard(card));
+		if(!optional.isPresent()) {
 			
+			return null;
 		}
+		card=optional.get();
+		return creditCardRepository.save(card);
 	}
 }

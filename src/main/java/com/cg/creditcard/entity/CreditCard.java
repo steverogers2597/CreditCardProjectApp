@@ -1,6 +1,7 @@
 package com.cg.creditcard.entity;
 
-import java.time.LocalDate;
+
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -25,20 +26,18 @@ public class CreditCard {
 	private String cardType;
 	private String cardName;
 	private String cardNumber;
-    private LocalDate expiryDate;
+    private String expiryDate;
     private int cvv;
     
-    @OneToMany(cascade=CascadeType.ALL,targetEntity=Payment.class)
-    @JoinTable(name="card_payment")
-    private Set<Payment> payments;
+    @OneToMany(mappedBy = "creditCard", cascade=CascadeType.ALL)
+    private List<Payment> payments;
     
-    @OneToMany(cascade=CascadeType.ALL,targetEntity=Transaction.class)
-    @JoinTable(name="card_transaction")
-    private Set<Transaction> transactions;
+    @OneToMany(mappedBy = "creditCard" ,cascade=CascadeType.ALL)
+    private List<Transaction> transactions;
 	
 	
 	public CreditCard(long id, String bankName, String cardType, String cardName, String cardNumber,
-			LocalDate expiryDate, int cvv, Set<Payment> payments, Set<Transaction> transactions) {
+			String expiryDate, int cvv, List<Payment> payments, List<Transaction> transactions) {
 		super();
 		this.id = id;
 		this.bankName = bankName;
@@ -87,11 +86,11 @@ public class CreditCard {
 	public void setCardNumber(String cardNumber) {
 		this.cardNumber = cardNumber;
 	}
-	public LocalDate getExpiryDate() {
+	public String getExpiryDate() {
 		return expiryDate;
 	}
-	public void setExpiryDate(LocalDate expiryDate) {
-		expiryDate = expiryDate;
+	public void setExpiryDate(String expiryDate) {
+		this.expiryDate = expiryDate;
 	}
 	public int getCvv() {
 		return cvv;
@@ -101,18 +100,18 @@ public class CreditCard {
 	}
 	
 	
-	public Set<Payment> getPayments() {
+	public List<Payment> getPayments() {
 		return payments;
 	}
 
-	public void setPayments(Set<Payment> payments) {
+	public void setPayments(List<Payment> payments) {
 		this.payments = payments;
 	}
 	
-	public Set<Transaction> getTransactions() {
+	public List<Transaction> getTransactions() {
 		return transactions;
 	}
-	public void setTransactions(Set<Transaction> transactions) {
+	public void setTransactions(List<Transaction> transactions) {
 		this.transactions = transactions;
 	}
 
