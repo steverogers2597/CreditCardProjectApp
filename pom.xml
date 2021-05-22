@@ -51,11 +51,11 @@
             <scope>runtime</scope>
         </dependency>
     	
-    	<dependency>
+    	<!--  <dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
 			<scope>2.0.1.Final</scope>
-		</dependency>
+		</dependency>-->
         
         <dependency>
             <groupId>io.springfox </groupId>

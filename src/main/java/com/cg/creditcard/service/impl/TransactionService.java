@@ -41,7 +41,7 @@ public class TransactionService implements ITransactionService{
 	public Transaction addTransaction(Transaction transaction) {
 		
 		
-        CreditCard creditcard = creditCardRepository.findById(transaction.getCreditCard().getId()).get();
+       /* CreditCard creditcard = creditCardRepository.findById(transaction.getCreditCard().getId()).get();
         if (null == creditcard) {
         	creditcard = new CreditCard();
         }
@@ -53,7 +53,7 @@ public class TransactionService implements ITransactionService{
         creditcard.setExpiryDate(transaction.getCreditCard().getExpiryDate());
         creditcard.setCvv(transaction.getCreditCard().getCvv());
         
-        transaction.setCreditCard(creditcard);
+        transaction.setCreditCard(creditcard);*/
         return transactionRepository.save(transaction);
 
         

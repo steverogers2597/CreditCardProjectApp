@@ -29,15 +29,15 @@ public class CreditCard {
     private String expiryDate;
     private int cvv;
     
-    @OneToMany(mappedBy = "creditCard", cascade=CascadeType.ALL)
-    private List<Payment> payments;
+    /*@OneToMany(mappedBy = "creditCard", cascade=CascadeType.ALL)
+    private List<Payment> payments;*/
     
     @OneToMany(mappedBy = "creditCard" ,cascade=CascadeType.ALL)
     private List<Transaction> transactions;
 	
 	
 	public CreditCard(long id, String bankName, String cardType, String cardName, String cardNumber,
-			String expiryDate, int cvv, List<Payment> payments, List<Transaction> transactions) {
+			String expiryDate, int cvv, List<Transaction> transactions) {
 		super();
 		this.id = id;
 		this.bankName = bankName;
@@ -46,7 +46,7 @@ public class CreditCard {
 		this.cardNumber = cardNumber;
 		this.expiryDate = expiryDate;
 		this.cvv = cvv;
-		this.payments = payments;
+		
 		this.transactions = transactions;
 	}
 
@@ -100,13 +100,13 @@ public class CreditCard {
 	}
 	
 	
-	public List<Payment> getPayments() {
+	/*public List<Payment> getPayments() {
 		return payments;
 	}
 
 	public void setPayments(List<Payment> payments) {
 		this.payments = payments;
-	}
+	}*/
 	
 	public List<Transaction> getTransactions() {
 		return transactions;
@@ -119,7 +119,7 @@ public class CreditCard {
 	public String toString() {
 		return "CreditCard [id=" + id + ", bankName=" + bankName + ", cardType=" + cardType + ", cardName=" + cardName
 				+ ", cardNumber=" + cardNumber + ", expiryDate=" + expiryDate + ", cvv=" + cvv + ", payments="
-				+ payments + ", transactions=" + transactions + "]";
+				 + ", transactions=" + transactions + "]";
 	}
     
 }
